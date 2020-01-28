@@ -65,7 +65,7 @@ public class ATM_Machine_Class extends ATM_Operations {
 			}
 	}
 
-	public void choiceSelect() throws InsufficientAmountException {
+	public void choiceSelect() throws InsufficientAmountException,InputMismatchException {
 			System.out.println("Enter your choice");
 			int choice = input.nextInt();
 			switch(choice) {
@@ -128,9 +128,6 @@ public class ATM_Machine_Class extends ATM_Operations {
 			Integer newPin = input.nextInt();
 			if( newPin <= 9999 && newPin >= 1000 ) {
 				jdbc.setNewPIN(account.getAccountNo(),newPin);
-				//account.setPIN(newPin);
-				//System.out.println(account.getPIN());
-				//System.out.println("PIN Changed successfully");
 			}
 			else
 				System.out.println("PIN entered is invalid !!! Try again later");

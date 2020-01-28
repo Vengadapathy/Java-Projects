@@ -19,7 +19,7 @@ public abstract class ATM_Operations implements ATM_OperationsInterface {
 		jdbc = new JDBC();
 		jdbc.getConnection();
 		// get atm object from the atm table in the atm database
-		 atm1 = jdbc.getATM(100);
+		 atm1 = jdbc.getATM(101);
 		input = new Scanner(System.in);
 	}
 				
@@ -84,7 +84,7 @@ public abstract class ATM_Operations implements ATM_OperationsInterface {
 	
 	public void updateAmountWithdrawn() {
 		transaction.getAccount().setAmountWithdrawn( transaction.getAccount().getAmountWithdrawn() + transaction.getAmount() ) ;
-		//jdbc.updateAmountWithdrawn(transaction.getAccount().getAccountNo(),transaction.getAmount());
+//		jdbc.updateAmountWithdrawn(transaction.getAccount().getAccountNo(),transaction.getAmount());
 	}
 }
 

@@ -22,10 +22,9 @@ public class PIN_Change{
 				  String otp = val.toString();
 				Mailer( otp );
 				
-				try (Scanner sc = new Scanner(System.in)) {
+				Scanner sc = new Scanner(System.in);
 					System.out.println("Enter the OTP Generated");
 					String generatedOTP = sc.next();
 					return ( otp.equals(generatedOTP) ? true : false );
-				}
 		}
 }

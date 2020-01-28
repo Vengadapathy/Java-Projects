@@ -18,7 +18,7 @@ public class JDBC {
 	private static final String URL = "jdbc:mysql://localhost:3306/ATM_Version_1";
 	private static final String USERNAME = "root";
 	private static final String PASSWORD = "";
-
+	private static final String CREDIT = "CREDIT";
 	public static Connection connection = null;
 	public static PreparedStatement prep = null;
 	public String query = null;
@@ -65,7 +65,7 @@ public class JDBC {
 	}
 
 	public void setTransaction(Account account2, double amount, String type, ATM_Machine atm) {
-		int transactionTypeID = ("CREDIT".equals(type)) ? 1 : 2 ;
+		int transactionTypeID = (CREDIT.equals(type)) ? 1 : 2 ;
 			
 		query = "insert into transaction (userid,accountNo,transactionTypeID, amount ,atmid, balance) " + 
 							"( select userToAccount.userid ,userToAccount.accountNo , "+transactionTypeID+"  , "+amount+" ,  "+atm.getatmId()+"  , account.balance  from userToAccount \n" + 
@@ -99,13 +99,14 @@ public class JDBC {
 			String type = result.getString("type");
 			atm = new ATM_Machine(atmid, branchCode, new Date(), amountRemaining, location, atmStatus, type);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("ATM failure !!! \nTemporarily out of service");
+			System.exit(0);
 		}
 		return atm;
 	}
 
 	public void getTransactionList(long acctNo) {
-		query = " SELECT 	user.username, transaction.transactionid , account.accountNo, transaction.amount,transaction.balance, transaction.transactionDate , transactionType.transactionType, atm.atmid , atm.location  from transaction "+
+		query = " SELECT 	user.username, transaction.transactionid , account.accountNo, transaction.amount,transaction.balance, transaction.transactionDate , transactionType.transactionType, transaction.atmid , atm.location  from transaction "+
 						"	inner join account on transaction.accountNo = account.accountNo "+
 						"  inner join user on transaction.userid = user.userid "+
 						"  left join atm on transaction.atmid= atm.atmid  "+
@@ -116,12 +117,12 @@ public class JDBC {
 			prep = connection.prepareStatement(query);
 			prep.setLong(1, acctNo);
 			ResultSet result = prep.executeQuery();
-			System.out.println("UserName  \t    TransactionID       AccountNumber 		  Amount 		Balance	\t\t   TransactionDate   \t \t        TransactionType  \t\t   ATM_ID	\t\t Location \n");
+			System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+			System.out.printf("%20s	%10s		%10s		%10s		%15s		%20s		%20s		%10s		%20s		\n","UserName","TransactionID","AccountNumber"," Amount " , "Balance "," TransactionDate " , " TransactionType " , " ATM_ID " , " Location \n");
+			System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 			while (result.next()) {
-				System.out.println("\t"+result.getString("username")+" \t\t\t "+result.getInt("transactionid") + " \t\t\t  " +result.getLong("accountNo")+" \t\t\t "
-						+result.getDouble("amount") + " \t\t \t" +result.getDouble("balance")+"\t\t\t\t" + result.getTimestamp("transactionDate")+"\t\t\t\t"
-						+ result.getString("transactionType") + " \t\t\t\t   "+ result.getInt("atmid") + "\t\t\t "+ result.getString("location"));
-			}
+					System.out.printf("%20s	%20s		%30s		%20s		%20s		%20s		%20s		%20s		%20s		\n" , result.getString("username") , result.getInt("transactionid") , result.getLong("accountNo") , result.getDouble("amount") , result.getDouble("balance") , result.getTimestamp("transactionDate") , result.getString("transactionType") , result.getInt("atmid") , result.getString("location") );
+				}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -169,21 +170,21 @@ public class JDBC {
 		
 	}
 
-	public void updateAmountWithdrawn(long acctNo,double amount) {
-		query = "UPDATE account SET amountwithdrawn = ? WHERE accountNo = ? ;";
-		try {
-			prep = connection.prepareStatement(query);
-			prep.setDouble(1, amount);
-			prep.setLong(2, acctNo);
-			int result = prep.executeUpdate();
-			if (result==1)
-				System.out.println("New PIN for this Account is Updated");
-			else
-				System.out.println("New Pin Updation failed");		
-			} catch (SQLException e) {
-			e.printStackTrace();
-		}	
-	}
+//	public void updateAmountWithdrawn(long acctNo,double amount) {
+//		query = "UPDATE account SET amountwithdrawn = ? WHERE accountNo = ? ;";
+//		try {
+//			prep = connection.prepareStatement(query);
+//			prep.setDouble(1, amount);
+//			prep.setLong(2, acctNo);
+//			int result = prep.executeUpdate();
+//			if (result==1)
+//				System.out.println("New PIN for this Account is Updated");
+//			else
+//				System.out.println("New Pin Updation failed");		
+//			} catch (SQLException e) {
+//			e.printStackTrace();
+//		}	
+//	}
 		public void setAmountRemaining(double amountRemaining,int atmid) {
 			query = "UPDATE atm SET amountRemaining = ?  WHERE atmid = ?";
 			try {
