@@ -11,7 +11,9 @@ create table slotoperation(
 	
     truncate slotoperation;
     
-    insert into slotoperation(empid,slotid,slotoperationtypeid) values (1000,101,1);
+    insert into slotoperation(empid,slotid,slotoperationtypeid) values (1001,318,1);
+    
+    
     select * from slotoperation ;
     SELECT * from slotoperation where empid = 1 and slotoperationtypeid = 1 order by dateofoperation desc ;
     
@@ -19,13 +21,6 @@ create table slotoperation(
     
     select empid,slotoperationtypeid from slotoperation where slotid = 306 order by dateofoperation desc;
     
-    set foreign_key_checks = 1;
+    delete from slotoperation where slotoperationid >= 14;
     
-    select * from slotoperation 
-		inner join slotservicetypes on slotservicetypes.servicetypeid = slotoperation.slotoperationtypeid
-        inner join parkingslot on slotoperation.slotid=parkingslot.slotid
-		inner join floors on parkingslot.floorid = floors.floorid 
-        inner join parkingblock on floors.blockid = parkingblock.blockid 
-        inner join employee on parkingslot.empid = employee.empid 
-		inner join employeetovehicle on employeetovehicle.empid = employee.empid 
-		inner join vehicle on vehicle.vehicleid = employeetovehicle.vehicleid order by dateofoperation;
+    select * from parkingslot where slotid = 

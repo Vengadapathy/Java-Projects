@@ -7,6 +7,10 @@ create table parkingblock(
     fourwheelerslotcount int not null
     );
     
-    insert into parkingblock(blockname,totalfloors,location,twowheelerslotcount,fourwheelerslotcount) values('MLCP',7,'opposite to tower builidng',100,50);
+    insert into parkingblock(blockname,totalfloors,location,twowheelerslotcount,fourwheelerslotcount) values('MLCP',7,'opposite to tower builidng',10,25);
     
     select * from parkingblock ;
+    
+    truncate parkingblock ;
+    
+    set foreign_key_checks = 1;

@@ -7,9 +7,9 @@ create table employee(
     seatno varchar(20) not null,
     blockname varchar(20) not null
     );
-    alter table employee auto_increment = 100 ;
+    alter table employee auto_increment = 1000 ;
     
-    insert into employee(ename,phoneno,mailid,teamname,seatno,blockname) values ('vengat1','123451','vengatpy1@gmail.com','sdp od','12BR03','tower building') ; 
+    insert into employee(ename,phoneno,mailid,teamname,seatno,blockname) values ('vengat','12345','vengatpy@gmail.com','sdp od','12BR03','tower building') ; 
     
 	insert into employee(ename,phoneno,mailid,teamname,seatno,blockname) values ('barath','12346','vengatpy1@gmail.com','Im','5BN03','tower building') ; 
 	

@@ -1,3 +1,4 @@
+
 create table vehicleparking(
 	parkingid int primary key auto_increment,
     slotid int not null,
@@ -27,4 +28,12 @@ create table vehicleparking(
 
 	select * from parkingslot ;
     
+   SELECT * FROM vehicleparking 
+				inner join parkingslot on vehicleparking.slotid = parkingslot.slotid 
+				inner join parkingblock on parkingslot.blockid=parkingblock.blockid inner join vehicletypes on vehicletypes.vehicletypeid = parkingslot.slottypeid
+				WHERE vehicleno = 5 order by intime desc limit 1;
     
+	select * from vehicleparking inner join employeetovehicle ;
+    
+    
+    show full processlist ;

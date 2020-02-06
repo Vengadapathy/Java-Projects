@@ -3,6 +3,8 @@ create table slotservicetypes(
     servicetype varchar(20) not null unique
     );
     
-    insert into slotservicetypes (servicetype) values ('slot booking'),('slot cancelling') ;
+    insert into slotservicetypes (servicetype) values ('SLOT BOOKING'),('SLOT CANCELLING') ;
     
     select * from slotservicetypes;
+    
+    set foreign_key_checks = 1;
