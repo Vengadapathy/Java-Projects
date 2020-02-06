@@ -1,0 +1,20 @@
+Project Name :	Automated Car Parking
+
+Project description :
+	
+	1.Employees can park vehicles
+	2.Two wheelers and four wheeler
+	3.Two floors for bikes and ten floors for car
+	4.Reserved parking for some employees (need to register)
+	5.Parking lot can be Normal or Big one to accommodates big vehicles cars only
+	6.At any time a car can be parked anywhere even in pre allocated parkings also (need to inform the user)
+	7.While entering owner has to be alerted about parking available floor and Mark down his parking slot and provide him a ticket.
+	8.If a registered car park is occupied then, the owner has to be informed.
+	9.Consider weekend parking not allowed criteria 
+
+
+Featurs :
+	1.track every car’s intime and out time and parked location 
+	2.Provide alert about free parking space for unregistered cars	
+	3.Portal to register for a car park and get allocated with a car park.
+	4.Reporting statistics.
