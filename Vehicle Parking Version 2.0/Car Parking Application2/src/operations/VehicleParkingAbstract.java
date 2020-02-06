@@ -11,7 +11,7 @@ public abstract class VehicleParkingAbstract implements VehicleParkingInterface 
 	Database database = null ;
 	Scanner input = null ;
 	
-	public VehicleParkingAbstract() {
+	public void initialize() {
 			database  = new Database();
 			database.getConnection();
 			input = new Scanner(System.in);

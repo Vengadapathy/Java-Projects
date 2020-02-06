@@ -37,6 +37,15 @@ public class Database {
 			e.printStackTrace();
 		}
 	}
+	public void closeConnection() {
+			try {
+				this.connection.close();
+				this.prep.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+	}
 	public Vehicle getEmployeeVehicle(int empid) {
 		query = "select * from employee		" + 
 						"		inner join employeetovehicle on employeetovehicle.empid = employee.empid		" + 
@@ -49,7 +58,8 @@ public class Database {
 			prep = connection.prepareStatement(query);
 			prep.setInt(1,empid);
 			ResultSet result = prep.executeQuery();
-			result.next();
+			if(	result.next()	== false 	)
+			{	System.out.println("No employee record found");	}
 			employee = new Employee(result.getString("ename")  , result.getInt("empid"), result.getLong("phoneno") , result.getString("mailid") , result.getString("teamname") , result.getString("seatno") , result.getString("blockname") ) ;
 			vehicle = new Vehicle(result.getInt("vehicleid"),result.getString("vehicleno"), result.getString("vehiclename") , result.getString("vehicletype"), result.getString("vehiclecolour"), employee);			
 		} catch (SQLException e) {
@@ -138,8 +148,7 @@ public class Database {
 		result.next();
 		return result.getInt("slotid");
 	} catch (SQLException e) {
-		System.out.println("Parking slot not available for your vehicle");
-		e.printStackTrace();
+		System.out.println("Vehicle parking slot not found !!! Check whether your vehicle is parked here or not");
 	}
 		return 0 ;
 }
@@ -432,6 +441,7 @@ public class Database {
 		e.printStackTrace();
 	}
 	}
+	
 	
 //	public ParkingSlot getCancellingSlot(Vehicle vehicle) {
 //		query="select * from parkingslot\n" + 

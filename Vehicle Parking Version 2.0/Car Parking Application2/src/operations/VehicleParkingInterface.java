@@ -1,6 +1,5 @@
 package operations;
 
-import objects.Employee;
 import objects.Vehicle;
 
 public interface VehicleParkingInterface {

@@ -1,21 +1,31 @@
 package operations;
 
+import java.sql.SQLException;
 import java.util.InputMismatchException;
 
 import objects.Vehicle;
 
 public class VehicleParkingOperations extends VehicleParkingAbstract  {
 	
-	public VehicleParkingOperations(){
-		super();
-	}
 	public void start(){
 		try {
+			initialize();
 			display();
 		} catch(InputMismatchException ex) {
 			System.out.println("Invalid Input entered");
-		} finally {
-			display() ;
+		} catch(NullPointerException exp){
+			System.out.println("Database result empty !!! try again");
+		} catch(Exception ex1){
+			System.out.println("Unknown Exception ");
+		}finally {
+				try {
+					database.connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			database = null ;
+			input = null ;
+			start() ;
 		}
 	}
 	public void display() {
@@ -31,11 +41,15 @@ public class VehicleParkingOperations extends VehicleParkingAbstract  {
 					System.out.println("Enter your employee ID");
 					int empid = input.nextInt();
 					Vehicle vehicle = database.getEmployeeVehicle(empid);
-					parkingServices(vehicle);
+					if(vehicle == null )
+						display();
+					else
+						parkingServices(vehicle);
 					break;
 				default :
 					System.out.println("Invalid Choice");
 					display();
+					
 		}
 	}
 	private void adminLogin() {

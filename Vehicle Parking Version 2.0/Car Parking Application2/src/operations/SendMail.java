@@ -1,7 +1,5 @@
 package operations;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 import javax.mail.Message;
