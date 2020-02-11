@@ -9,7 +9,7 @@ create table slotoperation(
 	constraint fk_typeid1 foreign key(slotoperationtypeid) references slotservicetypes(servicetypeid)
 	);
 	
-    truncate slotoperation;
+    truncate slotoperation ;
     
     insert into slotoperation(empid,slotid,slotoperationtypeid) values (1000,101,1);
     select * from slotoperation ;
@@ -19,7 +19,7 @@ create table slotoperation(
     
     select empid,slotoperationtypeid from slotoperation where slotid = 306 order by dateofoperation desc;
     
-    set foreign_key_checks = 1;
+    set foreign_key_checks = 0;
     
     select * from slotoperation 
 		inner join slotservicetypes on slotservicetypes.servicetypeid = slotoperation.slotoperationtypeid

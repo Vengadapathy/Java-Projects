@@ -17,8 +17,6 @@ create table parkingslot(
     
     select * from parkingslot ;
 	
-     insert into parkingslot (slotid,floorid) values (206,1);
-     
     set foreign_key_checks = 1;
     
     alter table parkingslot change column empid empid int unique ;

@@ -13,5 +13,3 @@ insert into floors (floorname,blockid,floortypeid,slotcount) values ('FIRST FLOO
 
 
 select * from floors ;
-
-update floors set slotcount = 6 where floorid = 1 ;

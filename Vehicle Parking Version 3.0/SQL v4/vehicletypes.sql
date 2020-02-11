@@ -6,5 +6,3 @@ create table vehicletypes(
     insert into vehicletypes (vehicletype) values ('TWO WHEELER'),('FOUR WHEELER'),('E-VEHICLE') ;
     
     select * from vehicletypes ;
-    
-    select * from employeetovehicle ;
