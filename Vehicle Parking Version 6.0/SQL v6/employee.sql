@@ -37,11 +37,11 @@ create table employee(
 	insert into employee(ename,phoneno,mailid,teamname,seatno,blockname) values ('santhosh3','123473','vengatpy33@gmail.com','IM','3BS03','tower building') ; 
     
     
-    insert into employee(ename,phoneno,mailid,teamname,seatno,blockname) values ('vengat7','123457','vengatpy71@gmail.com','sdp od','7BR01','tower building') ; 
+    insert into employee(ename,phoneno,mailid,teamname,seatno,blockname) values ('vengat5','123455','vengatpy51@gmail.com','sdp od','5BR01','tower building') ; 
     
-	insert into employee(ename,phoneno,mailid,teamname,seatno,blockname) values ('barath7','123467','vengatpy72@gmail.com','Im','7BN02','tower building') ; 
+	insert into employee(ename,phoneno,mailid,teamname,seatno,blockname) values ('barath5','123465','vengatpy52@gmail.com','Im','5BN02','tower building') ; 
 	
-	insert into employee(ename,phoneno,mailid,teamname,seatno,blockname) values ('santhosh7','123477','vengatpy73@gmail.com','IM','7BS03','tower building') ; 
+	insert into employee(ename,phoneno,mailid,teamname,seatno,blockname) values ('santhosh5','123475','vengatpy53@gmail.com','IM','5BS03','tower building') ; 
     
     
     insert into employee(ename,phoneno,mailid,teamname,seatno,blockname) values ('vengat4','123454','vengatpy41@gmail.com','sdp od','4BR01','tower building') ; 

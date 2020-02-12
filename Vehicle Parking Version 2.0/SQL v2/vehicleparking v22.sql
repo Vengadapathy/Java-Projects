@@ -11,7 +11,11 @@ create table vehicleparking(
     
     insert into vehicleparking(slotid,vehicleid) values(105,8) ;
     
-    
+    alter table vehicleparking change column empid empid int not null ; 
+    alter table vehicleparking drop column empid ;
+	alter table vehicleparking add constraint fk_empid5 foreign key(empid) references employee(empid) ; 
+
+
     select * from vehicleparking;
     
     truncate vehicleparking ;
@@ -96,4 +100,7 @@ create table vehicleparking(
                             
 	select intime ,outtime from vehicleparking where slotid = 101 order by intime  ;
     
-    delete from vehicleparking where parkingid = 6 ;
+    
+    insert into vehicleparking (slotid,intime,vehicleid,empid) values (206,'2020-02-12 10:20:55',3,1002);
+    
+    delete from vehicleparking where parkingid = 65 ;
