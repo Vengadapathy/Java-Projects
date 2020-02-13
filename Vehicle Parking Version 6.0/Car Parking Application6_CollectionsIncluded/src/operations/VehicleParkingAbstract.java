@@ -30,16 +30,12 @@ public abstract class VehicleParkingAbstract implements VehicleParkingInterface 
 			parkingBlock = database.loadParkingBlock();
 			parkingFloor = database.loadParkingFloor( parkingBlock );
 			parkingSlot = database.loadParkingSlot( parkingFloor );
-			VehicleParkingAbstract.parkingMap = database.loadParkingMap( parkingSlot );
-			VehicleParkingAbstract.bookingMap = database.loadBookingMap( parkingSlot );
-			database.loadVehicleToParkedSlot();
-			database.loadVehicleToBookedSlot();
+			parkingMap = database.loadParkingMap( parkingSlot );
+			bookingMap = database.loadBookingMap( parkingSlot );
 	}
 
 	public void slotAvailableFloor() {
-		System.out.print("Two wheelers slot available in \t");
 		database.getSlotAvailableFloor(ONE) ;
-		System.out.print("Four wheeler slot available in \t");
 		database.getSlotAvailableFloor(TWO) ;
 	}
 

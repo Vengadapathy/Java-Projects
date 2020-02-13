@@ -101,27 +101,26 @@ public class Database {
 //				return parkingSlot ;
 //		}
 	
-			public int getSlotAvailableFloor(int floortypeid) {
-				String		query = "select  * from floors right join \n" + 
-								"(select floors.floorid,floors.floorname,vehicletypes.vehicletype as floortype,count(vehicleparking.slotid) as totalslotsfilled , (floors.slotcount-count(vehicleparking.slotid)) as remainingslots from vehicleparking \n" + 
-								"			right join parkingslot on parkingslot.slotid = vehicleparking.slotid\n" + 
-								"			right join floors on floors.floorid = parkingslot.floorid\n" + 
-								"			right join parkingblock on parkingblock.blockid = floors.blockid\n" + 
-								"            inner join vehicletypes on vehicletypes.vehicletypeid = floors.floortypeid\n" + 
-								"            where vehicleparking.outtime is null and vehicletypes.vehicletypeid = ? group by floors.floorid	) as tb on floors.floorid = tb.floorid where remainingslots >0;" ;
+			public boolean getSlotAvailableFloor(int floortypeid) {
+				String	query = "select floors.floorid, floors.floorname,vehicletypes.vehicletype ,count(slotid) as remainingslots from parkingslot\n" + 
+						"		right join floors on floors.floorid = parkingslot.floorid\n" + 
+						"        inner join vehicletypes on vehicletypes.vehicletypeid = floors.floortypeid\n" + 
+						"where parkingslot.slotid NOT IN (select slotid from vehicleparking where outtime is null) AND parkingslot.slotid NOT IN (select slotid from slotoperation where slotcancellingtime is null) and vehicletypeid = ?  group by floors.floorid ";
 						try {
-							prep = connection.prepareStatement(query);
-							prep.setInt(1,floortypeid);
-							ResultSet result = prep.executeQuery();
-							if(  result.next()	==	false  )
-							{		System.out.println("Parking slots not available");	}
-							else {
-								System.out.println(result.getString("floorname")+"       -----     " +result.getInt("remainingslots")+" slots available");
+								prep = connection.prepareStatement(query);
+								prep.setInt(1,floortypeid);
+								ResultSet result = prep.executeQuery();
+								if(  result.next()	==	false  )
+								{		System.out.println("Parking slots not available ");
+										return false ;
+								}	else {
+									System.out.println(result.getString("vehicletype") +" slots available in "+result.getString("floorname")+"       -----     " +result.getInt("remainingslots")+" slots available");
+									return true ;
+								}
+							} catch (SQLException e) {
+								e.printStackTrace();
 							}
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-						return 0 ;
+							return true ;
 			}	
 	public int getVehicleSlotID(String vehicleno) {
 	String	query = "select slotid from vehicleparking " + 

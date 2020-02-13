@@ -13,7 +13,7 @@ select * from employee
 select floors.floorid, vehicletypes.vehicletype ,count(slotid) from parkingslot
 		right join floors on floors.floorid = parkingslot.floorid
         inner join vehicletypes on vehicletypes.vehicletypeid = floors.floortypeid
-where parkingslot.slotid NOT IN (select slotid from vehicleparking where outtime is null) AND parkingslot.slotid NOT IN (select slotid from slotoperation where slotcancellingtime is null) and vehicletypeid = 1 group by floors.floorid;
+where parkingslot.slotid NOT IN (select slotid from vehicleparking where outtime is null) AND parkingslot.slotid NOT IN (select slotid from slotoperation where slotcancellingtime is null) and vehicletypeid = 2 group by floors.floorid;
 
 
 select * from parkingslot
