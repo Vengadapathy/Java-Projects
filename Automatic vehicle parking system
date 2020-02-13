@@ -1,0 +1,74 @@
+AUTOMATIC VEHICLE PARKING SYSTEM :
+
+AIM :
+
+	1. To form a automated vehicle parking system with seperate admin features and employee features.
+
+
+REQUIREMENTS : 
+
+	1.Give a free slot for parking a vehicle.
+	2.Give a free slot to be booked for an employee and his vehicle
+	3.Admin can be able to perform monitering operations in the vehicle parking and slot booking
+
+SPECIFIC CASES :
+
+	1. One employee can have more than one vehicles or no vehicles.
+	2. One vehicle can be shared by two employee's in some cases.
+
+FEATURES :
+	
+	1.Admin features :
+		* Can view vehicle parking list for all employee's
+		* Can view slot booking and slot cancelling 
+		* Can filter vehicle parking registry for specific days
+		* Can identify employees who have parked more than one vehicle.
+		* Can send vehicle shifting request for employees when all vehicles in a particular floor is to be vacated due to some reasons
+
+	2. Employee features:
+		* Can get a generated free slot for vehicle parking
+		* Can book a generated free slot for their vehicles
+		* Can depart vehicle parked before 
+		* Can cancell a booked slot allotted for employee's vehicle
+		* Can find the place where their vehicle is currently parked
+		* Can report when their booked slot is unavailable or parked by some other employee (special case)
+
+TEST CASES :
+	
+	1. Vehicle slot booking test cases :
+		* A free slot is generated in increasing order
+		* If a slot is already booked or already parked, it cannot be a free slot
+		* If a slot is already booked or allocated for a employee vehicle, then free slot cannot be booked
+		* If employee vehicle is parked in a unbooked free slot and if it lies before a generated free slot, then the vehicle parked unbooked slot can be allocated for the emploeyee vehicle
+
+	2. Vehicle booked slot cancelling :
+		* Initially the vehicle is checked whether slot is booked, if not booked process is terminated
+		* Afterwards, the booked slote for the vehicle is obtained and slot cancelling time is updated
+		* Also vehicle data stored in parking slot is also cleared
+
+	3. Vehicle Parking :
+		* Check whether the vehicle is already parked
+		* if not parked check whether any slot booked for this vehicle
+		* If booked blot is not parked then park into the booked slot or else get a new free slot
+		* If no booking found get a unbooked free slot for parking
+	
+	4. Vehicle Departure :
+		* Check whether the vehicle is parked or not
+		* If not parked terminate process
+		* If parked get the parking data and set out time in the parking data
+	
+	5. Find my vehicle:
+		* Check whether the vehicle is parked or not
+		* If vehicle is parked the get the slot data where the vehicle is parked and display the data
+		* If vehicle not parked terminate the process
+
+	6. Unavailable Booked slot :
+		* Check whether any slot is booked for the vehicle
+		* Check whether any vehicle parked in your booked slot or your vehicle is parked 
+		* If any other vehicle is parked, insert a unavailable booked slot entry and automated mail is sent to the employee who have parked in a booked slot
+	
+	7. Common test cases :
+		* Check whether input entered is valid or not in every case if a input is obtained
+		* Check for null value  when a object data is obtained for further operation
+		* Exceptions should be handled for uninterrupted control flow
+ 

@@ -50,11 +50,33 @@ select * from slotoperation
         
         
 /*VEHICLE TO PARKED SLOT MAPPING*/
-select * from vehicleparking
-		inner join parkingslot on parkingslot.slotid = vehicleparking.slotid
-        inner join floors on floors.floorid = parkingslot.floorid
-		inner join parkingblock on floors.blockid = parkingblock.blockid
-		inner join vehicletypes on vehicletypes.vehicletypeid = floors.floortypeid
+select parkingslot.slotid,parkingslot.floorid,floors.blockid,floors.floorname,vehicletypes.vehicletype,floors.slotcount,parkingblock.blockname,parkingblock.location,parkingblock.totalfloors,parkingblock.twowheelerslotcount, parkingblock.fourwheelerslotcount from vehicleparking
+		left join parkingslot on parkingslot.slotid = vehicleparking.slotid
+        left join floors on floors.floorid = parkingslot.floorid
+		left join parkingblock on floors.blockid = parkingblock.blockid
+        left join vehicle on parkingslot.vehicleid = vehicle.vehicleid
+        left join employeetovehicle on employeetovehicle.vehicleid = vehicle.vehicleid
+        left join employee on employee.empid = employeetovehicle.empid
+		left join vehicletypes on vehicletypes.vehicletypeid = floors.floortypeid
         where outtime is null ;
 
+select * from vehicleparking
+		left join parkingslot on parkingslot.slotid = vehicleparking.slotid
+        left join floors on floors.floorid = parkingslot.floorid
+		left join parkingblock on floors.blockid = parkingblock.blockid
+        left join vehicle on parkingslot.vehicleid = vehicle.vehicleid
+        left join employeetovehicle on employeetovehicle.vehicleid = vehicle.vehicleid
+        left join employee on employee.empid = employeetovehicle.empid
+		left join vehicletypes on vehicletypes.vehicletypeid = floors.floortypeid
+        where outtime is null ;
+
+
 /*VEHICLE TO BOOKED SLOT MAPPING*/
+select * from slotoperation
+		left join parkingslot on parkingslot.slotid = slotoperation.slotid
+        left join floors on floors.floorid = parkingslot.floorid
+		left join parkingblock on floors.blockid = parkingblock.blockid
+        left join vehicle on slotoperation.vehicleid = vehicle.vehicleid
+        left join employee on employee.empid = slotoperation.empid
+		left join vehicletypes on vehicletypes.vehicletypeid = floors.floortypeid
+        where slotcancellingtime is null ;

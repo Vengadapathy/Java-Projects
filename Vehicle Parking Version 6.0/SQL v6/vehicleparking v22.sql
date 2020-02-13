@@ -9,8 +9,9 @@ create table vehicleparking(
     constraint fk_slotid1 foreign key(slotid) references parkingslot(slotid)
 	);
     
-    insert into vehicleparking(slotid,vehicleid) values(105,8) ;
+    insert into vehicleparking(slotid,vehicleid,empid) values(104,2,1001) ;
     
+    select * from unavailablebookedslot ;
     
     select * from vehicleparking;
     

@@ -17,6 +17,17 @@ select  * from floors right join
             inner join vehicletypes on vehicletypes.vehicletypeid = floors.floortypeid
             where vehicleparking.outtime is null and vehicletypes.vehicletypeid = 1 group by floors.floorid	) as tb on floors.floorid = tb.floorid where remainingslots >0;
             
+/* CALCULATING FILLED AND UNFILLED SLOTS IN EACH FLOOR CONSIDERING BOOKED SLOT ALSO */
+select  * from floors right join 
+(select floors.floorid,floors.floorname,vehicletypes.vehicletype as floortype,count(vehicleparking.slotid) as totalslotsfilled , (floors.slotcount-count(vehicleparking.slotid)) as remainingslots from vehicleparking 
+			right join parkingslot on parkingslot.slotid = vehicleparking.slotid
+			right join floors on floors.floorid = parkingslot.floorid
+			right join parkingblock on parkingblock.blockid = floors.blockid
+            inner join vehicletypes on vehicletypes.vehicletypeid = floors.floortypeid
+            where vehicleparking.outtime is null and vehicletypes.vehicletypeid = 1 group by floors.floorid	) as tb on floors.floorid = tb.floorid where remainingslots >0;
+          
+
+
             
 select  * from floors right join 
 (select floors.floorid,floors.floorname,vehicletypes.vehicletype as floortype,count(vehicleparking.slotid) as totalslotsfilled , (floors.slotcount-count(vehicleparking.slotid)) as remainingslots from vehicleparking 
@@ -178,3 +189,29 @@ select employee.empid,employee.ename,parkingid,vehicle.vehicleno,vehicleparking.
 					inner join employee on vehicleparking.empid = employee.empid 
                     inner join vehicle on vehicle.vehicleid = vehicleparking.vehicleid
 					group by vehicleparking.empid , vehicleparking.parkingid order by vehicleparking.empid,parkingid desc;
+                    
+/*FLOOR WISE BOOKED AND PARKED SLOT COUNT*/
+select * from parkingslot
+		left join vehicleparking on parkingslot.slotid = vehicleparking.slotid
+        left join slotoperation on parkingslot.slotid = slotoperation.slotid
+        where outtime is not null and slotcancellingtime is not null ;
+        
+        
+        
+select floors.floorid,count(vehicleparking.slotid) from vehicleparking
+				right join parkingslot on vehicleparking.slotid=parkingslot.slotid 
+                right join floors on parkingslot.floorid = floors.floorid group by floors.floorid;
+				right join parkingblock on floors.blockid = parkingblock.blockid 
+        
+        
+select * from parkingslot 
+		left join (select slotid,max(parkingid) from vehicleparking where outtime is not null group by slotid) as tb on tb.slotid = parkingslot.slotid;
+        
+
+select * from parkingslot 
+		left join vehicleparking on parkingslot.slotid = vehicleparking.slotid
+        where vehicleparking.outtime is not null ;
+
+select * from vehicleparking ;
+
+select * from slotoperation where slotcancellingtime is null ;
