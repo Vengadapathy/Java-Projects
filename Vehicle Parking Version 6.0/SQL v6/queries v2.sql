@@ -9,7 +9,21 @@ select * from employee
         where employee.empid = 1000 and vehicle.vehicleno = 'TN 05 FN 1230';
 
 /*CALCULATING FILLED AND UNFILLED SLOTS IN EACH FLOOR*/
-select  * from floors right join 
+
+select floors.floorid, vehicletypes.vehicletype ,count(slotid) from parkingslot
+		right join floors on floors.floorid = parkingslot.floorid
+        inner join vehicletypes on vehicletypes.vehicletypeid = floors.floortypeid
+where parkingslot.slotid NOT IN (select slotid from vehicleparking where outtime is null) AND parkingslot.slotid NOT IN (select slotid from slotoperation where slotcancellingtime is null) and vehicletypeid = 1 group by floors.floorid;
+
+
+select * from parkingslot
+		right join floors on floors.floorid = parkingslot.floorid
+        inner join vehicletypes on vehicletypes.vehicletypeid = floors.floortypeid
+where parkingslot.slotid NOT IN (select slotid from vehicleparking where outtime is null) AND parkingslot.slotid NOT IN (select slotid from slotoperation where slotcancellingtime is null) ;
+
+
+
+/*select  * from floors right join 
 (select floors.floorid,floors.floorname,vehicletypes.vehicletype as floortype,count(vehicleparking.slotid) as totalslotsfilled , (floors.slotcount-count(vehicleparking.slotid)) as remainingslots from vehicleparking 
 			right join parkingslot on parkingslot.slotid = vehicleparking.slotid
 			right join floors on floors.floorid = parkingslot.floorid
@@ -18,7 +32,7 @@ select  * from floors right join
             where vehicleparking.outtime is null and vehicletypes.vehicletypeid = 1 group by floors.floorid	) as tb on floors.floorid = tb.floorid where remainingslots >0;
             
 /* CALCULATING FILLED AND UNFILLED SLOTS IN EACH FLOOR CONSIDERING BOOKED SLOT ALSO */
-select  * from floors right join 
+/*select  * from floors right join 
 (select floors.floorid,floors.floorname,vehicletypes.vehicletype as floortype,count(vehicleparking.slotid) as totalslotsfilled , (floors.slotcount-count(vehicleparking.slotid)) as remainingslots from vehicleparking 
 			right join parkingslot on parkingslot.slotid = vehicleparking.slotid
 			right join floors on floors.floorid = parkingslot.floorid
@@ -27,7 +41,7 @@ select  * from floors right join
             where vehicleparking.outtime is null and vehicletypes.vehicletypeid = 1 group by floors.floorid	) as tb on floors.floorid = tb.floorid where remainingslots >0;
           
 
-
+*/
             
 select  * from floors right join 
 (select floors.floorid,floors.floorname,vehicletypes.vehicletype as floortype,count(vehicleparking.slotid) as totalslotsfilled , (floors.slotcount-count(vehicleparking.slotid)) as remainingslots from vehicleparking 
@@ -211,6 +225,11 @@ select * from parkingslot
 select * from parkingslot 
 		left join vehicleparking on parkingslot.slotid = vehicleparking.slotid
         where vehicleparking.outtime is not null ;
+
+select * 
+from parkingslot
+where parkingslot.slotid NOT IN (select slotid from vehicleparking where outtime is null) AND parkingslot.slotid NOT IN (select slotid from slotoperation where slotcancellingtime is null);
+
 
 select * from vehicleparking ;
 

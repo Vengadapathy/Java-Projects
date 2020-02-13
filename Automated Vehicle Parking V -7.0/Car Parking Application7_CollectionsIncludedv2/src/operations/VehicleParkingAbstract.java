@@ -29,28 +29,26 @@ public abstract class VehicleParkingAbstract implements VehicleParkingInterface 
 			database  = new Database();
 			input = new Scanner(System.in);
 			database.getConnection();
-			VehicleParkingAbstract.parkingBlock = database.loadParkingBlock();
-			VehicleParkingAbstract.parkingFloor = database.loadParkingFloor( parkingBlock );
-			VehicleParkingAbstract.parkingSlot = database.loadParkingSlot( parkingFloor );
-			VehicleParkingAbstract.parkingMap = database.loadParkingMap( parkingSlot );
-			VehicleParkingAbstract.bookingMap = database.loadBookingMap( parkingSlot );
-			VehicleParkingAbstract.vehicleToParkedSlot =  database.loadVehicleToParkedSlot();
-			VehicleParkingAbstract.vehicleToBookedSlot = database.loadVehicleToBookedSlot();
-			printAllMaps();
-		
+			parkingBlock = database.loadParkingBlock();
+			parkingFloor = database.loadParkingFloor( parkingBlock );
+			parkingSlot = database.loadParkingSlot( parkingFloor );
+			parkingMap = database.loadParkingMap( parkingSlot );
+			bookingMap = database.loadBookingMap( parkingSlot );
+			vehicleToParkedSlot =  database.loadVehicleToParkedSlot();
+			vehicleToBookedSlot = database.loadVehicleToBookedSlot();
 	}
 
 	public void slotAvailableFloor() {
-		System.out.print("Two wheelers slot available in \t");
+		System.out.print(ONE+ " ----->>\t");
 		database.getSlotAvailableFloor(ONE) ;
-		System.out.print("Four wheeler slot available in \t");
+		System.out.print(TWO+" ----->>\t");
 		database.getSlotAvailableFloor(TWO) ;
 	}
 
 	public void parkingSlotBooking(Vehicle vehicle) {
 		SlotOperation slotOperation = null ;
 		if( vehicleToBookedSlot.get(vehicle.getVehicleID())==null     ) {
-				ParkingSlot slot  = database.getFreeSlot( vehicle ,ONE );
+				ParkingSlot slot  = database.getFreeSlot( vehicle );
 		if(	slot != null 	&&   (	parkingMap.get(slot.getParkingSlotID())  == null ||  parkingMap.get(slot.getParkingSlotID()).getVehicle().getVehicleID()  == vehicle.getVehicleID()  ) ) {
 			try {
 					database.connection.setAutoCommit(false);
@@ -75,11 +73,9 @@ public abstract class VehicleParkingAbstract implements VehicleParkingInterface 
 			slot.setVehicle(vehicle);
 			parkingSlot.put(slot.getParkingSlotID(), slot);
 			vehicleToBookedSlot.put(vehicle.getVehicleID(), slot);
-		}	else 	{
+			}	else 	{
 			System.out.println("All slots are engaged. No free slots available");
-		}
-//			printAllMaps();
-
+			}
 		}
 		else	{	System.out.println("Parking slot already booked for this vehicle");	}
 	}
@@ -110,8 +106,7 @@ public abstract class VehicleParkingAbstract implements VehicleParkingInterface 
 			bookingMap.remove(slot.getParkingSlotID());
 			System.out.println("Booked slot cancelling successful");
 			vehicleToBookedSlot.remove(vehicle.getVehicleID());
-//			printAllMaps();
-		}	else	{	System.out.println("No slot booking found for this vehicle");	}
+			}	else	{	System.out.println("No slot booking found for this vehicle");	}
 		}
 	
 	public void vehicleParking(Vehicle vehicle ) {
@@ -122,14 +117,13 @@ public abstract class VehicleParkingAbstract implements VehicleParkingInterface 
 						if( vehicleToBookedSlot.get(vehicle.getVehicleID()) != null  &&  vehicleToBookedSlot.get(vehicle.getVehicleID()).getVehicle().getVehicleID() == vehicle.getVehicleID()   ) {
 							slot = vehicleToBookedSlot.get(vehicle.getVehicleID()) ;
 						}	else  {
-							slot  = database.getFreeSlot( vehicle ,ONE );	
+							slot  = database.getFreeSlot( vehicle );	
 			}
 			if(slot != null ) {
 				VehicleParking parking = database.parkingSlotEntry(slot , vehicle );	
 				parkingMap.put(slot.getParkingSlotID(), parking ) ;
 				vehicleToParkedSlot.put(vehicle.getVehicleID(), slot) ;
-			//	printAllMaps();
-		}
+			}
 		}	
 	}
 	
@@ -142,7 +136,6 @@ public abstract class VehicleParkingAbstract implements VehicleParkingInterface 
 				database.updateParkingSlotEntry( parking );
 				parkingMap.remove(slot.getParkingSlotID());
 				vehicleToParkedSlot.remove(vehicle.getVehicleID()) ;
-//				printAllMaps();
 		}
 	}
 	
@@ -172,39 +165,4 @@ public abstract class VehicleParkingAbstract implements VehicleParkingInterface 
 		database.getSlotOperationList();
 	}
 
-	void printAllMaps() {
-		for(	int building : parkingBlock.keySet()	) {
-			System.out.println(building+"     "+parkingBlock.get(building));
-		}
-		
-		System.out.println("PArking Floors Map Values");
-		for(	int floor : parkingFloor.keySet()	) {
-			System.out.println(floor+"     "+parkingFloor.get(floor));
-		}
-		
-		System.out.println("PArking Slot Map Values");
-		for(	int slot : parkingSlot.keySet()	) {
-			System.out.println(slot+"     "+parkingSlot.get(slot));
-		}
-		
-		System.out.println("Vehicle PArking  Map Values");
-		for(	int floor : parkingMap.keySet()	) {
-			System.out.println(floor+"     "+parkingMap.get(floor));
-		}
-		
-		System.out.println("PArking Slot Booking  Map Values");
-		for(	int slot : bookingMap.keySet()	) {
-			System.out.println(slot+"     "+bookingMap.get(slot));
-		}
-		
-		System.out.println("Vehicle PArking  Map Values");
-		for(	int floor : vehicleToParkedSlot.keySet()	) {
-			System.out.println(floor+"     "+vehicleToParkedSlot.get(floor));
-		}
-		
-		System.out.println("PArking Slot Booking  Map Values");
-		for(	int slot : vehicleToBookedSlot.keySet()	) {
-			System.out.println(slot+"     "+vehicleToBookedSlot.get(slot));
-		}
-	}
 }
