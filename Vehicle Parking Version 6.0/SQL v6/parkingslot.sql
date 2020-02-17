@@ -21,7 +21,7 @@ create table parkingslot(
     
     set foreign_key_checks = 1 ;
     
-    select * from parkingslot
+    select * from parkingslot ;
     
     alter table parkingslot drop column isslotbooked   ;
     

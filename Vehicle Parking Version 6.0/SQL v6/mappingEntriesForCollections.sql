@@ -80,3 +80,12 @@ select * from slotoperation
         left join employee on employee.empid = slotoperation.empid
 		left join vehicletypes on vehicletypes.vehicletypeid = floors.floortypeid
         where slotcancellingtime is null ;
+
+
+/*BOOKING MAP WITH ALL SLOTS*/
+select * from slotoperation
+        left join vehicle on slotoperation.vehicleid = vehicle.vehicleid
+        left join employee on employee.empid = slotoperation.empid
+		left join vehicletypes on vehicletypes.vehicletypeid = vehicle.vehicletypeid
+        where slotcancellingtime is null  order by slotoperation.slotid ;
+        
