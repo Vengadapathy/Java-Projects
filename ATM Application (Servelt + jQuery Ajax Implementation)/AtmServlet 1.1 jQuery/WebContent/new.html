@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body onload=display_ct();>
+    <span id='ct' ></span>
+    
+    </body>
+</html>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script type="text/javascript"> 
+
+$.ajax({
+			method:'GET',
+			url:'Other',
+			data:{event:'balance'},
+			success: function(data){
+				console.log(data)
+				$('label').text(data);
+			},
+            error:function(xhr,textStatus,err){
+            alert(textStatus+" - "+err);
+			window.setTimeout(goToHome,3000);
+        }
+		})
+
+
+    function display_c(){
+    var refresh=1000; // Refresh rate in milli seconds
+    mytime=setTimeout('display_ct()',refresh)
+    }
+    
+    function display_ct() {
+    var x = new Date()
+    document.getElementById('ct').innerHTML = x;
+    display_c();
+     }
+
+     $.ajax({
+			method:'GET',
+			url:'Other',
+			data:{event:'balance'},
+			success: function(data){
+				console.log(data)
+				$('label').text(data);
+			}
+		})
+
+        function goToHome(){
+		sessionStorage.clear();
+		window.location.replace("LogOut.html") ;
+	}    
+</script>

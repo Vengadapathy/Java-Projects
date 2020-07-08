@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<style>
+body{
+background-color: honeydew;
+}
+#body{
+width: 1330px;
+height: 560px;
+/*background-color: skyblue;*/
+background-image: linear-gradient(turquoise,rgba(8, 35, 156, 0.788));
+background-color: darkblue;
+color:mintcream;
+position: relative;
+left:10px;
+}
+.right-button{
+background-image: linear-gradient(to right,transparent,rgba(132, 161, 233, 0.842));
+background-color: transparent;
+color:white;
+width: 350px;
+height: 100px;
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+font-size: x-large;
+border-width: 0px;
+margin-left:20px;
+margin-right:220px;
+margin-bottom: 20px;
+position: relative;
+left:150px;
+top:250px;
+opacity: 1;
+transition: ease-in-out;
+}
+.right-button:nth-child(3){
+margin-right: 0px;
+}
+.right-button:hover{	
+background-image: linear-gradient(to right,transparent,rgba(218, 224, 240, 0.842));
+background-color:transparent;
+color:white;
+opacity: 1;
+}
+.left-label{
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+font-size: xx-large;
+margin:20px;
+position: relative;
+top:30px;
+left:20px;
+}
+#bank-title{
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+font-size: xx-large;
+background-color: turquoise;
+width: 200px;
+text-align: center;
+color: white;
+position: relative;
+top:20px;
+left:10px;
+}
+#welcome{
+width:200px;
+text-align: center;
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+font-size: xx-large;
+color:gray;
+opacity: 0.6;
+position: relative;
+left: 1150px;
+top:-20px;
+}
+/* select,option{
+    background-image: linear-gradient(to right,transparent,rgba(235, 239, 247, 0.842));
+	background-color: transparent;
+    color:white;
+    width: 350px;
+    height: 100px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: x-large;
+	border-width: 0px;
+	margin-left:20px;
+	margin-right:80px;
+    margin-bottom: 20px;
+    position: relative;
+    left:400px;
+    top:100px;
+	opacity: 1;
+	transition: ease-in-out;
+    text-align: center;
+    }
+    option{
+    background-image: linear-gradient(to right,white,rgba(132, 161, 233, 0.842));
+	background-color: rgba(18, 63, 175, 0.842);
+    color:white;
+    width: 350px;
+    height: 100px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: x-large;
+	border-width: 0px;
+	margin-left:20px;
+	margin-right:80px;
+    margin-bottom: 20px;
+    position: relative;
+    left:5px;
+    top:300px;
+	opacity: 1;
+	transition: ease-in-out;
+    } */
+    
+   select,option{
+                font-family:'Josefin Sans','Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                font-size: 30px;
+                width:100px;
+                text-align: center;
+                background-color: transparent; 
+                border: 3px solid whitesmoke;
+                border-radius: 20px;
+                width: 200px;
+                text-align: center;
+                color:white;
+            }  
+       select *{
+       color:dodgerblue;
+       background-color: linear-gradient(to right,transparent,rgba(132, 161, 233, 0.842));
+       
+       }
+            
+</style>
+</head>
+<body>
+	<div id='header'>
+		<p class='time'></p>
+	</div>
+	<div id="bank-title">
+		<label>ABC BANK</label>
+	</div>
+	<div id="welcome">
+		<label>WELCOME</label><br>
+	</div>
+	<div id="body">
+	
+		<h2><label class="left-label">Select the account for fund transfer</label></h2>
+		<div id='dropdown'>
+	
+		</div>
+		<div>
+			<button class="right-button" id='btn-1'>Select</button>
+			<button class="right-button" id='btn-2'>Cancel</button>
+		</div>
+	
+	</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+if(sessionStorage.getItem("loginstatus") !== 'true'){
+	sessionStorage.clear();
+	console.log('status failed')
+	window.location.replace("LogOut.html") ;
+}
+
+$(document).ready(function(){
+	
+	clockDisplay();
+	function clockDisplay() {
+		$('#header > .time').text(new Date().toLocaleString()).css('text-align','right');
+		setTimeout(clockDisplay,1000)
+	}
+	
+		var jsonString ;
+		var select = $('<select/>');
+		var droplist = $('#dropdown');
+		$.ajax({
+			method:'GET',
+			url:'Transaction',
+			success: function(data){
+				createMenu(data);
+			},
+			error:function(xhr,textStatus,err){
+               	alert(textStatus+" - "+err);
+				window.setTimeout(closePage,3000);
+            }
+		});
+		
+function createMenu(jsonString){
+			console.log(jsonString);
+			droplist.append($('<label/>').attr('for','accountNumber').text('Select your Account No	: ')).addClass('left-label');
+			select.attr({'id':'selectlist' , 'name':'accountNumber'});
+			//for loop
+			for(var key in jsonString){
+				select.append($('<option/>').text(jsonString[key]).attr('value',jsonString[key]));
+			}
+			droplist.append(select);
+		}
+
+		$('#btn-1').click(function(){
+			alert(select.val());
+			sessionStorage.setItem('accountno',select.val());
+			window.location.href="Transaction.html";
+		});
+		
+		$('#btn-2').click(function(){
+			sessionStorage.clear();
+			window.location.replace("LogOut.html") ;
+		});
+
+		function closePage(){
+			sessionStorage.clear();
+			window.location.replace("LogOut.html") ;
+		}
+});
+
+</script>
+</html>

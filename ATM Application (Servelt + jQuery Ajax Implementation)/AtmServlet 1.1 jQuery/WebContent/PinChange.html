@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<style>
+body{
+    background-color: honeydew;
+	}
+	#body{
+    width: 1330px;
+    height: 560px;
+    /*background-color: skyblue;*/
+    background-image: linear-gradient(turquoise,rgba(8, 35, 156, 0.788));
+	background-color: darkblue;
+	color:mintcream;
+    position: relative;
+    left:10px;
+}
+.text{
+	opacity: 1;
+}
+.right-button{
+	background-image: linear-gradient(to right,transparent,rgba(132, 161, 233, 0.842));
+	background-color: transparent;
+    color:white;
+    width: 350px;
+    height: 100px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: x-large;
+	border-width: 0px;
+	/* margin-left:20px;
+	margin-right:80px;
+    margin-bottom: 20px; */
+    position: absolute;
+    left:40%;
+    top:400px;
+	opacity: 1;
+	transition: ease-in-out;
+}
+.right-button:nth-child(3){
+	margin-right: 0px;
+}
+.right-button:hover{	
+	background-image: linear-gradient(to right,transparent,rgba(218, 224, 240, 0.842));
+	background-color:transparent;
+    color:white;
+	opacity: 1;
+}
+.left-label{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-size: xx-large;
+	margin:20px;
+	position: relative;
+	top:30px;
+	left:20px;
+}
+.left-input{
+	width:400px;
+	height: 70px;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-size: 60px;
+	position: relative;
+	top:45px;
+	left:40px;
+	text-align: center;
+	background-color: transparent;
+	border-width: 0px;
+	color:white;
+}
+#bank-title{
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-size: xx-large;
+	background-color: turquoise;
+	width: 200px;
+	text-align: center;
+	color: white;
+	position: relative;
+	top:20px;
+	left:10px;
+}
+#welcome{
+	width:200px;
+	text-align: center;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-size: xx-large;
+	color:gray;
+	opacity: 0.6;
+	position: relative;
+	left: 1150px;
+	top:-20px;
+}
+</style>
+</head>
+<body>
+	<div id='header'>
+		<p class='time'></p>
+	</div>
+	<div id="bank-title">
+		<label>ABC BANK</label>
+	</div>
+	<div id="welcome">
+		<label>WELCOME</label><br>
+	</div>
+	<div id='body'>
+	<div id="otpDiv">
+		<h2><label class="left-label">ENTER THE 6-DIGIT OTP SENT TO YOUR MAIL</label></h2>
+		<label class="left-label">6-DIGIT OTP : </label>
+		<input class="left-input" type="number" id="otp" >
+		<button class="right-button" id="otp-btn">Submit</button>
+	</div>
+	<div id="passDiv">
+		<h2><label class="left-label">SET NEW PIN</label></h2>
+		<div>
+			<label class="left-label" >Old PIN : </label>
+			<input class="left-input" type="number" id="oldpin">
+		</div>
+		<div>
+			<label class="left-label" >New PIN : </label>
+			<input class="left-input" type="number" id="newpin1">
+		</div>
+		<div>
+			<label class="left-label" >Confirm New PIN : </label>
+			<input class="left-input" type="number" id="newpin2">
+		</div>
+		<button class="right-button" id="changepin-btn">Change PIN</button>
+	</div>
+	</div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+if(sessionStorage.getItem("loginstatus") !== 'true'){
+	sessionStorage.clear();
+	console.log('status failed')
+	window.location.replace("LogOut.html") ;
+}
+$(document).ready(function(){
+
+	clockDisplay();
+	function clockDisplay() {
+		$('#header > .time').text(new Date().toLocaleString()).css('text-align','right');
+		setTimeout(clockDisplay,1000)
+	}
+
+	$('#passDiv').attr('style','display:none');
+	sendRequest('POST','Other',null)
+	
+	function sendRequest(method,url,sendData){
+		console.log(sendData);
+		$.ajax({
+			method :  method ,
+			url : url ,
+			data : sendData ,
+			success : function(data){
+				if((sendData === null) && (method === 'POST')){
+					validateOtp();
+				} else if((method === 'POST') && (data.status === true) ){
+		        	$('#passDiv').css('display','block');
+		        	$('#otpDiv').css('display','none');
+		        	$('#changepin-btn').click(setNewPin);
+				} else if( (method === 'PUT') && (data.status === true) ){
+					alert("PIN Changed successfully");
+					closePage();
+				} 
+				else {
+					alert("Page error")
+					closePage();
+				}
+			},
+			error:function(xhr,textStatus,err){
+				alert(textStatus+" - "+err);
+				closePage();
+        	}
+		});
+	}
+	// validateOtp();
+	function validateOtp(){
+		$('#otp-btn').click(function(){
+			if($('#otp').val().length <= 6 && $('#otp').val() != ""){
+				sendRequest('POST','Other',{"otp":$('#otp').val()});
+				
+			} else {
+				alert('Please enter a valid otp with maximum 6 digits');
+			}
+		});
+	}
+	
+	function setNewPin(){
+		if($('#oldpin').val().length != 4 || $('#newpin1').val().length != 4 || $('#newpin2').val().length != 4){
+			alert("Please enter a valid PIN with maximum 4 digits");
+		} else if( ($('#oldpin').val() === $('#newpin1').val()) || ($('#newpin1').val() != $('#newpin2').val())  || ($('#newpin1').val().length !== 4)){
+			alert("Invalid PIN entered");
+		} else {
+			sendRequest('PUT','Other',JSON.stringify({"pin":$('#newpin1').val()}));
+			console.log("success");
+		}
+	}
+	
+	function closePage(){
+		window.setTimeout(function(){
+			sessionStorage.clear();
+			window.location.replace("LogOut.html") ;
+		},5000);
+	}
+});
+
+</script>
+</html>

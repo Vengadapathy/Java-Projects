@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<style>
+/* table, th, td {
+	border: 1px solid black;
+} */
+body{
+background-color: honeydew;
+padding: 10px;
+}
+#body{
+width: 95%;
+height: 540px;
+/*background-color: skyblue;*/
+background-image: linear-gradient(turquoise,rgba(8, 35, 156, 0.788));
+background-color: darkblue;
+color:mintcream;
+position: relative;
+margin :10px;
+padding : 20px;
+}
+#body > div{
+	text-align: center;
+}
+#body > div > label{
+	font-size: 40px;
+}
+.tableDiv{
+    /* padding : 25px; */
+	margin: 10px;
+	/* margin-right: 20px; */
+	min-height: 100px;
+	position: relative;
+}
+table {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	/* margin: 100px; */
+	padding : 25px;
+	margin:auto;
+	align-items: center;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    /* width: 75%; */
+    font:20px 'Raleway','Times New Roman', sans-serif;
+    /* border: 3px solid white; */
+}
+td, th {
+    /* border: 5px solid #000000; */
+    text-align: center;
+    padding: 8px;
+    border: none;
+    color:black;
+}
+th{
+    background-color: #039be5;
+    border: 5px solid #039be5;
+	color:black;
+
+}
+.tr{
+    background-color: #f5f5f5;
+    border: 5px solid #f5f5f5;
+	color:black;
+
+}
+tr:nth-child(even) {
+    background-color: #e0e0e0;
+    border: 5px solid #e0e0e0;
+	color:black;
+} 
+.highlightTr{
+    border:6px solid #039be5;
+}
+.highlightInput{
+    background: #eeeeee;
+}
+#bank-title{
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+font-size: xx-large;
+background-color: turquoise;
+width: 200px;
+text-align: center;
+color: white;
+position: relative;
+top:20px;
+left:10px;
+}
+#statement{
+	position:absolute;
+	top:70px;
+	right:0px;
+	left:0px;
+	bottom:0px;
+	margin:40px;
+}
+
+</style>
+</head>
+<body>
+	<div id="bank-title">
+		<label>ABC BANK</label>
+	</div>
+	<div id='header'>
+		<p class='time'></p>
+	</div>
+	<div id='body'>
+		<div><label> MINI - STATEMENT </label></div>
+	<div id='statement' class='tableDiv'></div>
+	</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+if(sessionStorage.getItem("loginstatus") !== 'true'){
+	sessionStorage.clear();
+	console.log('status failed')
+	window.location.replace("LogOut.html") ;
+}
+$(document).ready(function(){
+	// var st = {username:'USER_1', transactionid:'38', accountno:'1234500', recipientacountno:'1234500', amount:'300.0', balance:'700.0', transactiondate:"2020-07-04 19:38:39.0", transactiontype:'CREDIT', transactionmode:'ATM', transactionmodeinfo:"100/Cash Deposit"};
+	// console.log(st);
+	// var ar = [];
+	// ar.push(st);
+	clockDisplay();
+	function clockDisplay() {
+		$('#header > .time').text(new Date().toLocaleString()).css('text-align','right');
+		setTimeout(clockDisplay,1000)
+	}
+
+	var div = $('#statement');
+
+	$.ajax({
+		method:'GET',
+		url:'Other',
+		data:{event:'statement'},
+		success: function(data){
+			var jsonArray = data;
+			console.log(jsonArray);
+			div.html(createTable(jsonArray).html()).css({'overflow-x':'scroll','overflow-y':'scroll'});
+			console.log(div);
+			window.setTimeout(goToHome,20000);
+		},
+		error:function(xhr,textStatus,err){
+            alert(textStatus+" - "+err);
+			window.setTimeout(goToHome,3000);
+        }
+	});
+
+	// div.html(createTable(ar).html()).css({'overflow-x':'auto','overflow-y':'auto'});
+
+	function createTable(jsonArray){ 
+		var table = $('<table/>').css({'overflow-x':'scroll','overflow-y':'scroll'}).addClass('table').append($('<thead/>').append(createHead(jsonArray)));
+		var tbody=$('<tbody/>');
+		for(var index in jsonArray ){
+			var tr = $('<tr/>').addClass('tr');
+			for( var key in jsonArray[index]){
+				tr.append($('<td/>').append($('<label/>').text(jsonArray[index][key]).addClass('headdata')).addClass('td'));
+			}
+			tbody.append(tr); 
+		}
+		return $('<div/>').append(table.append(tbody));
+	}
+
+	function createHead(jsonArray){
+		var tr = $('<tr/>').addClass('tr');
+		for(var key in jsonArray[0]){
+			tr.append($('<th/>').append($('<label/>').text(key.toUpperCase()).addClass('headdata')).addClass('th'));
+		}
+		return tr;
+	}
+
+	function goToHome(){
+		sessionStorage.clear();
+		window.location.replace("LogOut.html") ;
+	}
+});
+
+</script>
+</html>
