@@ -1,8 +1,10 @@
 package Servlets;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import javax.servlet.ServletException;
@@ -39,7 +41,36 @@ public class OtherOperations extends HttpServlet {
 //				System.out.println(responseJson.get("balance"));
 				response.getWriter().print(responseJson);
 			} else if(process.equalsIgnoreCase("statement")) {
+				atm.printStatement(atmcard.getAccount());
 				ArrayList<LinkedHashMap<String,String>> list = atm.miniStatement(atmcard.getAccount());
+//				try {
+//				    // Creates a FileWriter
+//					System.out.println("File write started");
+//				    FileWriter output = new FileWriter("Statement.txt");
+//				    String data = "";
+//				    System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+//					System.out.printf("%20s		%10s		%20s		%20s		%20s		%20s		%30s		%20s		%25s		%30s	\n","UserName","TransactionID","AccountNumber","Recipient AccountNo"," Amount " , "Balance "," TransactionDate " , " TransactionType " , "TransactionMode" , " TransactionModeInfo \n");
+//					System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+//					data +=  "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";    
+//					data = String.format("|  %15s 	|	%10s	|	%20s	|	%20s	|	%20s	|	%20s	|	%30s	|	%20s	|	%25s	|	%30s   |\n", "UserName","TransactionID","AccountNumber","Recipient AccountNo"," Amount " , "Balance "," TransactionDate " , " TransactionType " , "TransactionMode" , " TransactionModeInfo");
+//					data +=  "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";    
+//					output.write(data);
+//					for(int index=0;index<list.size();index++) {
+//						HashMap<String,String> map = list.get(index);
+//						System.out.printf("%20s		%10s		%20s		%20s		%20s		%20s		%30s		%20s		%30s		%30s	\n" ,map.get("username") , map.get("transactionid") , map.get("accountno") ,map.get("recipientaccountno") , map.get("amount") , map.get("balance") , map.get("transactiondate") , map.get("transactiontype") ,map.get("transactionmode"), map.get("transactionmodeinfo")  );
+//						data = String.format("|  %20s	|	%10s	|	%20s	|	%20s	|	%20s	|	%20s	|	%30s	|	%20s	|	%25s	|	%30s	|\n",map.get("username") , map.get("transactionid") , map.get("accountno") ,map.get("recipientaccountno") , map.get("amount") , map.get("balance") , map.get("transactiondate") , map.get("transactiontype") ,map.get("transactionmode"), map.get("transactionmodeinfo"));
+//						output.write(data);
+//					}
+//					data =  "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";    
+//					output.write(data);
+//				    output.close();
+//				}
+//				catch (Exception e) {
+//				    e.getStackTrace();
+//				}
+				
+				
+				
 				ArrayList<String> arr = new ArrayList<String>();
 				for(int index=0 ; index < list.size() ;index++) {
 					String jsonText = JSONValue.toJSONString(list.get(index));

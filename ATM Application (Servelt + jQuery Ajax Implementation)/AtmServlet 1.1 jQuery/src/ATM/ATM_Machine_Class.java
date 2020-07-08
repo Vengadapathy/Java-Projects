@@ -1,11 +1,12 @@
 package ATM;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Random;
 
 import Objects.Account;
@@ -45,7 +46,7 @@ public class ATM_Machine_Class extends ATM_Operations {
 				int pin = input.nextInt();
 				atmcard = userAccount(cardNo,pin);
 				System.out.println(atmcard);
-				if( authentication(atmcard) ) {
+				if( !authentication(atmcard) ) {
 					loginPage();
 				} else {
 					homeScreen(atmcard);
@@ -201,15 +202,50 @@ public class ATM_Machine_Class extends ATM_Operations {
 	public void printStatement(Account account) {
 		
 		ArrayList<LinkedHashMap<String, String>> list = miniStatement(account);
-		
-		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-		System.out.printf("%20s		%10s		%20s		%20s		%20s		%20s		%30s		%20s		%25s		%30s	\n","UserName","TransactionID","AccountNumber","Recipient AccountNo"," Amount " , "Balance "," TransactionDate " , " TransactionType " , "TransactionMode" , " TransactionModeInfo \n");
-		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-
-		for(int index=0;index<list.size();index++) {
-			Map<String, String> map = list.get(index);
-			System.out.printf("%20s		%10s		%20s		%20s		%20s		%20s		%30s		%20s		%30s		%30s	\n" ,map.get("username") , map.get("transactionid") , map.get("accountno") ,map.get("recipientaccountno") , map.get("amount") , map.get("balance") , map.get("transactiondate") , map.get("transactiontype") ,map.get("transactionmode"), map.get("transactionmodeinfo")  );
+		FileWriter output = null ;
+		try {
+		    // Creates a FileWriter
+			System.out.println("File write started");
+		    output = new FileWriter("C:/Users/User/Desktop/Statement.txt");
+		    String data = "";
+		    System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+			System.out.printf("%20s		%10s		%20s		%20s		%20s		%20s		%30s		%20s		%25s		%30s	\n","UserName","TransactionID","AccountNumber","Recipient AccountNo"," Amount " , "Balance "," TransactionDate " , " TransactionType " , "TransactionMode" , " TransactionModeInfo \n");
+			System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+			data +=  "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";    
+			data = String.format("|  %15s 	|	%10s	|	%20s	|	%20s	|	%20s	|	%20s	|	%30s	|	%20s	|	%25s	|	%30s   |\n", "UserName","TransactionID","AccountNumber","Recipient AccountNo"," Amount " , "Balance "," TransactionDate " , " TransactionType " , "TransactionMode" , " TransactionModeInfo");
+			data +=  "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";    
+			output.write(data);
+			for(int index=0;index<list.size();index++) {
+				HashMap<String,String> map = list.get(index);
+				System.out.printf("%20s		%10s		%20s		%20s		%20s		%20s		%30s		%20s		%30s		%30s	\n" ,map.get("username") , map.get("transactionid") , map.get("accountno") ,map.get("recipientaccountno") , map.get("amount") , map.get("balance") , map.get("transactiondate") , map.get("transactiontype") ,map.get("transactionmode"), map.get("transactionmodeinfo")  );
+				data = String.format("|  %20s	|	%10s	|	%20s	|	%20s	|	%20s	|	%20s	|	%30s	|	%20s	|	%25s	|	%30s	|\n",map.get("username") , map.get("transactionid") , map.get("accountno") ,map.get("recipientaccountno") , map.get("amount") , map.get("balance") , map.get("transactiondate") , map.get("transactiontype") ,map.get("transactionmode"), map.get("transactionmodeinfo"));
+				output.write(data);
+			}
+			data =  "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";    
+			output.write(data);
+		    output.close();
 		}
+		catch (Exception e) {
+		    e.getStackTrace();
+		}finally {
+			try {
+				if (output != null) {
+					output.flush();
+					output.close();					
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+//		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+//		System.out.printf("%20s		%10s		%20s		%20s		%20s		%20s		%30s		%20s		%25s		%30s	\n","UserName","TransactionID","AccountNumber","Recipient AccountNo"," Amount " , "Balance "," TransactionDate " , " TransactionType " , "TransactionMode" , " TransactionModeInfo \n");
+//		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+//
+//		for(int index=0;index<list.size();index++) {
+//			Map<String, String> map = list.get(index);
+//			System.out.printf("%20s		%10s		%20s		%20s		%20s		%20s		%30s		%20s		%30s		%30s	\n" ,map.get("username") , map.get("transactionid") , map.get("accountno") ,map.get("recipientaccountno") , map.get("amount") , map.get("balance") , map.get("transactiondate") , map.get("transactiontype") ,map.get("transactionmode"), map.get("transactionmodeinfo")  );
+//		}
 	}
 		
 	public boolean otpVerification(AtmCard atmcard) {
