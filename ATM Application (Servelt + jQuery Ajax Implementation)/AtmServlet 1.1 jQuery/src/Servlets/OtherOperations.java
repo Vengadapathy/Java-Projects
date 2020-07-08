@@ -34,7 +34,9 @@ public class OtherOperations extends HttpServlet {
 			
 			if(process.equalsIgnoreCase("balance")) {
 				JSONObject responseJson = new JSONObject();
-				responseJson.put("balance", atmcard.getAccount().getBalance());
+//				System.out.println( atmcard.getAccount().getBalance());
+				responseJson.put("balance", String.format("%.2f",atmcard.getAccount().getBalance()));
+//				System.out.println(responseJson.get("balance"));
 				response.getWriter().print(responseJson);
 			} else if(process.equalsIgnoreCase("statement")) {
 				ArrayList<LinkedHashMap<String,String>> list = atm.miniStatement(atmcard.getAccount());

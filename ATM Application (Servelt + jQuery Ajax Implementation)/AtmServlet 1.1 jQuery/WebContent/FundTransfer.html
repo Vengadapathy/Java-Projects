@@ -4,8 +4,12 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Cabin|Exo+2|Cabin|Rubik|Josefin+Sans|Titillium+Web|Ubuntu&display=swap');
+
 body{
 background-color: honeydew;
+font-family:'Cabin', sans-serif;
 }
 #body{
 width: 1330px;
@@ -53,26 +57,29 @@ top:30px;
 left:20px;
 }
 #bank-title{
-font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-font-size: xx-large;
-background-color: turquoise;
-width: 200px;
-text-align: center;
-color: white;
-position: relative;
-top:20px;
-left:10px;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-size: xx-large;
+	background-color: turquoise;
+	width: 200px;
+	text-align: center;
+	color: white;
+	position: relative;
+	/* border: 2px solid black; */
+	top:25px;
+	left:10px;
 }
 #welcome{
-width:200px;
-text-align: center;
-font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-font-size: xx-large;
-color:gray;
-opacity: 0.6;
-position: relative;
-left: 1150px;
-top:-20px;
+	width:470px;
+	text-align: center;
+	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+	font-size: large;
+	color:gray;
+	/* opacity: 0.6; */
+	position: relative;
+	 /* left: 1150px; */
+	top:-25px; 
+	margin-top: 20px;
+	margin-left : 900px;
 }
 /* select,option{
     background-image: linear-gradient(to right,transparent,rgba(235, 239, 247, 0.842));
@@ -133,14 +140,12 @@ top:-20px;
 </style>
 </head>
 <body>
-	<div id='header'>
-		<p class='time'></p>
-	</div>
+	
 	<div id="bank-title">
 		<label>ABC BANK</label>
 	</div>
 	<div id="welcome">
-		<label>WELCOME</label><br>
+		<label class='time'></label>
 	</div>
 	<div id="body">
 	
@@ -168,7 +173,7 @@ $(document).ready(function(){
 	
 	clockDisplay();
 	function clockDisplay() {
-		$('#header > .time').text(new Date().toLocaleString()).css('text-align','right');
+		$(' .time').text(new Date().toLocaleString()).css('text-align','right');
 		setTimeout(clockDisplay,1000)
 	}
 	
