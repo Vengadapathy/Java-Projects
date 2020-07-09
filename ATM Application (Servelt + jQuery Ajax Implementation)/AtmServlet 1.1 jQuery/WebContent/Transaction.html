@@ -181,8 +181,11 @@ if(sessionStorage.getItem("loginstatus") !== 'true'){
 				data : sendData,
 				success: function(data){
 					console.log(data);
-					alert(($('#btn').text())+" successful");
-					
+					if(data.status === true){
+						alert(($('#btn').text())+" successful");
+					} else {
+						alert(($('#btn').text())+" failed");
+					}
 				},
 				error:function(xhr,textStatus,err){
                		alert(textStatus+" - "+err);

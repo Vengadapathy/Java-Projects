@@ -55,7 +55,7 @@ public class TransactionServlet extends HttpServlet {
 			JSONObject json = new JSONObject(sb.toString());
 			process = json.getString("process");
 			amount = json.getDouble("amount");
-		
+			JSONObject responseJson = new JSONObject();
 			if(("Fund Transfer").equalsIgnoreCase(process)) {
 				int accountNo = Integer.parseInt(json.getString("accountno"));
 				//Get AccountNo lists
@@ -65,13 +65,15 @@ public class TransactionServlet extends HttpServlet {
 			} else if(("Withdraw").equalsIgnoreCase(process)) {
 				status = atm.transaction(atmcard.getAccount(),atmcard.getAccount().getAccountNo(),2,"DEBIT",amount);
 			}
+			responseJson.put("status", status);
+			response.setContentType("appliction/json");
+			response.getWriter().print(responseJson);
 		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		System.out.println("servlet status "+status);
+		atm.closeConnection();
 	}
 
 }

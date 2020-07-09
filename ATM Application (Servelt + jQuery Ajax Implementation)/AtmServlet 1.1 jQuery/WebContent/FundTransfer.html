@@ -166,7 +166,7 @@ left:20px;
 if(sessionStorage.getItem("loginstatus") !== 'true'){
 	sessionStorage.clear();
 	console.log('status failed')
-	window.location.replace("LogOut.html") ;
+	// window.location.replace("LogOut.html") ;
 }
 
 $(document).ready(function(){
@@ -191,7 +191,6 @@ $(document).ready(function(){
 				window.setTimeout(closePage,3000);
             }
 		});
-		
 function createMenu(jsonString){
 			console.log(jsonString);
 			droplist.append($('<label/>').attr('for','accountNumber').text('Select your Account No	: ')).addClass('left-label');
@@ -204,9 +203,13 @@ function createMenu(jsonString){
 		}
 
 		$('#btn-1').click(function(){
-			alert(select.val());
-			sessionStorage.setItem('accountno',select.val());
-			window.location.href="Transaction.html";
+			var confirmation = confirm("Account selected for fund transfer is "+select.val());
+			if(confirmation){
+				sessionStorage.setItem('accountno',select.val());
+				window.location.href="Transaction.html";
+			} else {
+				select.prop('selectedIndex',0);
+			}
 		});
 		
 		$('#btn-2').click(function(){
