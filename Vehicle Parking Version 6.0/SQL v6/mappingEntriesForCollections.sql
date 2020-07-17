@@ -89,3 +89,5 @@ select * from slotoperation
 		left join vehicletypes on vehicletypes.vehicletypeid = vehicle.vehicletypeid
         where slotcancellingtime is null  order by slotoperation.slotid ;
         
+        
+select * from atm where atmid = 101;
